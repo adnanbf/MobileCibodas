@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/cart_row_selector"
+    android:orientation="horizontal"
+    android:id="@+id/main_parent">
+
+
+
+    <!-- Reservation Number-->
+    <TextView
+        android:id="@+id/no_reservation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="#ReservationNumber"
+        android:textColor="#040404"
+        android:typeface="sans"
+        android:textSize="15dip"
+        android:layout_marginStart="10dp"
+        android:textStyle="bold"
+        android:layout_marginTop="7dp" />
+
+    <!-- Date -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dipesan pada tanggal 0000-00-00"
+        android:textColor="#343434"
+        android:textSize="14dip"
+        android:id="@+id/date_reservation"
+        android:layout_below="@+id/no_reservation"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Status"
+        android:textColor="@color/blue"
+        android:id="@+id/status_reservation"
+        android:layout_marginEnd="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="7dp" />
+
+</RelativeLayout>

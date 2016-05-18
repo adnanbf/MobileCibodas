@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/cart_row_selector"
+    android:orientation="vertical"
+    android:id="@+id/main_parent">
+
+    <!-- Seller Name-->
+    <TextView
+        android:id="@+id/seller_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:text="Seller Name"
+        android:textColor="@color/monsoon"
+        android:typeface="sans"
+        android:textSize="15dip"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="5dp" />
+
+
+    <!--  ListRow Left sied Thumbnail image -->
+    <LinearLayout android:id="@+id/thumbnail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="5dp">
+
+        <ImageView
+            android:id="@+id/list_image"
+            android:layout_width="75dp"
+            android:layout_height="75dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <!-- Product Name-->
+                <TextView
+                    android:id="@+id/product_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Product Name"
+                    android:textColor="#040404"
+                    android:typeface="sans"
+                    android:textSize="15dip"
+                    android:gravity="left"/>
+                <!-- Product Price -->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100000"
+                    android:textColor="#343434"
+                    android:textSize="14dip"
+                    android:id="@+id/price"
+                    android:layout_marginRight="5dp"
+                    android:gravity="right"
+                    android:layout_gravity="top|right" />
+            </FrameLayout>
+
+
+            <!-- Product Category -->
+            <TextView
+                android:id="@+id/category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/product_name"
+                android:textColor="#343434"
+                android:textSize="10dip"
+                android:text="Product Category"
+                android:layout_marginTop="5dp" />
+
+            <TextView
+                android:id="@+id/textJumlah"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jumlah :"
+                android:textSize="12dp"
+                android:textColor="@color/primary"
+                android:layout_marginTop="5dp"/>
+            <TextView
+                android:id="@+id/textJadwal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jadwal :"
+                android:textSize="12dp"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+
+    <!-- Product Remove -->
+
+    <!-- Rightend Amount -->
+
+    <!-- Rightend Date -->
+
+
+</LinearLayout>

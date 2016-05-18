@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/cart_row_selector"
+    android:orientation="horizontal"
+    android:id="@+id/main_parent">
+
+    <!--  ListRow Left sied Thumbnail image -->
+    <LinearLayout android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+
+        android:layout_marginRight="5dip">
+
+        <ImageView
+            android:id="@+id/list_image"
+            android:layout_width="75dp"
+            android:layout_height="75dp" />
+
+    </LinearLayout>
+
+    <!-- Product Name-->
+    <TextView
+        android:id="@+id/product_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:text="Product Name"
+        android:textColor="#040404"
+        android:typeface="sans"
+        android:textSize="15dip"
+        android:textStyle="bold"/>
+
+    <!-- Product Category -->
+    <TextView
+        android:id="@+id/category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/product_name"
+        android:textColor="#343434"
+        android:textSize="10dip"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:text="Product Category"
+        android:layout_marginTop="5dp" />
+
+    <!-- Product Price -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Rp. "
+        android:textColor="#343434"
+        android:textSize="14dip"
+        android:id="@+id/currency"
+        android:layout_below="@+id/category"
+        android:layout_alignStart="@+id/category"
+        android:layout_marginTop="7dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100000"
+        android:textColor="#343434"
+        android:textSize="14dip"
+        android:id="@+id/price"
+        android:layout_below="@+id/category"
+        android:layout_toEndOf="@+id/currency"
+        android:layout_marginTop="7dp" />
+    <!-- Product Remove -->
+    <TextView
+        android:id="@+id/text_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text="Remove"
+        android:layout_marginRight="5dip"
+        android:textSize="15dip"
+        android:textColor="#10bcc9"
+        android:textStyle="bold"
+        android:onClick="removeCartHandler"
+        android:layout_alignBottom="@+id/editDate"
+        android:layout_toEndOf="@+id/thumbnail" />
+
+    <!-- Rightend Amount -->
+
+    <TextView
+        android:id="@+id/textJumlah"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jumlah :"
+        android:textSize="12dp"
+        android:textColor="@color/primary"
+        android:layout_alignBottom="@+id/product_name"
+        android:layout_alignEnd="@+id/editAmount" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editAmount"
+            android:layout_marginRight="10dp"
+            android:hint="100"
+            android:textSize="18dp"
+            android:textColor="@drawable/texthover"
+            style="?android:listSeparatorTextViewStyle"
+            android:onClick="setAmount"
+            android:layout_below="@+id/product_name"
+            android:layout_alignParentEnd="true" />
+
+    <!-- Rightend Date -->
+    <TextView
+        android:id="@+id/textJadwal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jadwal :"
+        android:textColor="@color/primary"
+        android:textSize="13dp"
+        android:layout_below="@+id/editAmount"
+        android:layout_alignEnd="@+id/editAmount" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/editDate"
+        android:hint="2016-12-31"
+        android:onClick="setDate"
+        android:textSize="18dp"
+        android:textColor="@drawable/texthover"
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_below="@+id/price"
+        android:layout_alignEnd="@+id/textJadwal"
+        android:layout_marginTop="3dp" />
+
+
+
+
+</RelativeLayout>
