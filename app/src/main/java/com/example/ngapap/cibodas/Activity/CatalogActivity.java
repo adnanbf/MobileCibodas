@@ -17,6 +17,7 @@ import android.widget.SearchView;
 
 import com.example.ngapap.cibodas.Fragment.CatalogFragment;
 import com.example.ngapap.cibodas.JSONParser;
+import com.example.ngapap.cibodas.Model.Customer;
 import com.example.ngapap.cibodas.Model.Product;
 import com.example.ngapap.cibodas.NetworkUtils;
 import com.example.ngapap.cibodas.R;
@@ -26,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by user on 25/03/2016.
@@ -33,6 +35,7 @@ import java.util.ArrayList;
 public class CatalogActivity extends MenuActivity {
     private ArrayList<Product> listProduct;
     SearchView searchView;
+    Customer customer ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +45,20 @@ public class CatalogActivity extends MenuActivity {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         session = new SessionManager(getApplicationContext());
         // Enabling Back navigation on Action Bar icon
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         handleIntent(getIntent());
         networkUtils = new NetworkUtils(getApplicationContext());
+        HashMap<String, String> user = session.getUserDetails();
+        String data = user.get(SessionManager.KEY_DATA);
+        customer = new Customer();
         Bundle catalog = getIntent().getExtras();
         String jsonString = catalog.getString("catalog");
         ArrayList<Product> list = new ArrayList<>();
         try {
+            JSONArray jsonArray = new JSONArray(data);
+            customer = customer.toCustomer(jsonArray);
             JSONArray jsonProduct = new JSONArray(jsonString);
             Product product = new Product();
             for (int i = 0; i < jsonProduct.length(); i++) {
@@ -91,9 +101,10 @@ public class CatalogActivity extends MenuActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            String name = params[0].toString();
+            String name = params[0];
+            String api_token = params[1];
             String returnValue = "";
-            String myURL = getString(R.string.base_url) + "products/find?find=" + name;
+            String myURL = getString(R.string.base_url) + "products/find?api_token="+api_token+"&find=" + name;
             JSONParser jsonParser = new JSONParser();
             try {
                 if (networkUtils.isConnectedToServer(myURL)) {
@@ -174,7 +185,7 @@ public class CatalogActivity extends MenuActivity {
             String query = intent.getStringExtra(SearchManager.QUERY);
             Log.d("shitstain-", query);
             FindProductAsynctask task = new FindProductAsynctask(CatalogActivity.this);
-            task.execute(query);
+            task.execute(query,customer.getApi_token());
             // Do work using string
         }
     }

@@ -110,7 +110,7 @@ public class AddressReservFragment extends Fragment {
                 String city = _inputCity.getText().toString();
                 String prov = _inputProv.getText().toString();
                 UpdateAddressAsyncTask task = new UpdateAddressAsyncTask(getActivity());
-                task.execute(customer.getUser_id(), street, city, prov, zip_code);
+                task.execute(customer.getUser_id(), street, city, prov, zip_code, customer.getApi_token());
             }
         });
 
@@ -204,9 +204,10 @@ public class AddressReservFragment extends Fragment {
             String city = params[2];
             String prov = params[3];
             String zip_code=params[4];
+            String api_token = params[5];
             String returnValue="";
             JSONObject object = new JSONObject();
-            String myURL = getString(R.string.base_url)+"customers/update/address";
+            String myURL = getString(R.string.base_url)+"customers/updateAddress?api_token="+api_token;
             try {
                 if(networkUtils.isConnectedToServer(myURL)){
                     object.put("user_id",id);
@@ -214,6 +215,7 @@ public class AddressReservFragment extends Fragment {
                     object.put("city", city);
                     object.put("province", prov);
                     object.put("zip_code",zip_code);
+//                    object.put("api_token", api_token);
                     JSONParser jsonParser = new JSONParser();
                     String request =jsonParser.postJSON(myURL,object);
                     if(!request.equals("DBproblem")){

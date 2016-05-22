@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +15,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.ngapap.cibodas.Activity.CatalogActivity;
+import com.example.ngapap.cibodas.Activity.MenuActivity;
 import com.example.ngapap.cibodas.Adapter.CatalogContentAdapter;
 import com.example.ngapap.cibodas.Model.Product;
 import com.example.ngapap.cibodas.R;
@@ -44,6 +44,7 @@ public class CatalogFragment extends android.app.Fragment  {
         _listCatalog= (ListView) rootView.findViewById(R.id.list);
         adapter=new CatalogContentAdapter(getActivity(),listCatalog);
         _listCatalog.setAdapter(adapter);
+        ((MenuActivity) getActivity()).setListViewHeightBasedOnChildren(_listCatalog);
 //        _listCatalog.setAdapter(new CatalogContentAdapter(getActivity(), listCatalog));
 
         _listCatalog.setOnItemClickListener(new AdapterView.OnItemClickListener() {

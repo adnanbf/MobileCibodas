@@ -10,12 +10,13 @@
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="false"
         android:layout_alignParentStart="false"
         android:divider="@color/iron"
         android:dividerHeight="5dp"
-        android:listSelector="@drawable/list_selector"></ListView>
+        android:listSelector="@drawable/list_selector">
+    </ListView>
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_awesome_toolbar"

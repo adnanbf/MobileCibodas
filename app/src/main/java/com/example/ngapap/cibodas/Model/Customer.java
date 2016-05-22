@@ -19,6 +19,7 @@ public class Customer {
     private String zip_code;
     private String password;
     private String phone;
+    private String api_token;
     private int status;
 
 
@@ -35,7 +36,7 @@ public class Customer {
             cus.setProvince(jsonArray.getJSONObject(0).getString("PROVINCE").toString());
             cus.setZip_code(jsonArray.getJSONObject(0).getString("ZIP_CODE").toString());
             cus.setPhone(jsonArray.getJSONObject(0).getString("PHONE").toString());
-            cus.setPassword(jsonArray.getJSONObject(0).getString("PASSWORD").toString());
+            cus.setApi_token(jsonArray.getJSONObject(0).getString("API_TOKEN").toString());
             cus.setStatus(jsonArray.getJSONObject(0).getInt("STATUS"));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -58,6 +59,7 @@ public class Customer {
             json.put("PASSWORD", getPassword());
             json.put("PHONE", getPhone());
             json.put("STATUS",getStatus());
+            json.put("API_TOKEN", getApi_token());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -77,9 +79,10 @@ public class Customer {
             json.put("CITY", getCity());
             json.put("PROVINCE", getProvince());
             json.put("ZIP_CODE",getZip_code());
-            json.put("PASSWORD",getPassword());
+//            json.put("PASSWORD",getPassword());
             json.put("PHONE", getPhone());
             json.put("STATUS",getStatus());
+            json.put("API_TOKEN", getApi_token());
             jason.put(0,json);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -181,5 +184,13 @@ public class Customer {
 
     public void setProvince(String province) {
         this.province = province;
+    }
+
+    public String getApi_token() {
+        return api_token;
+    }
+
+    public void setApi_token(String api_token) {
+        this.api_token = api_token;
     }
 }

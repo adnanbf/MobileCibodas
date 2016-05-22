@@ -16,4 +16,6 @@
     <string name="dialog_create_con">Connecting...</string>
     <string name="base_url">http://192.168.137.1/C-Bodas/public/api/v1/</string>
     <string name="btn_confirm_reservation">Confirm Reservation</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 </resources>

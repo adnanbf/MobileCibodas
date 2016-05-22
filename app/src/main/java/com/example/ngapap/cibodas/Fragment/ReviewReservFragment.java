@@ -100,7 +100,7 @@ public class ReviewReservFragment extends Fragment {
         _btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StoreReservationAsynctask task = new StoreReservationAsynctask(getActivity());
+                StoreReservationAsynctask task = new StoreReservationAsynctask(getActivity(), customer.getApi_token());
                 task.execute(reservation);
             }
         });
@@ -127,8 +127,10 @@ public class ReviewReservFragment extends Fragment {
     private class StoreReservationAsynctask extends AsyncTask<Reservation, String, String> {
         Context context;
         ProgressDialog progressDialog;
+        String api_token;
 
-        StoreReservationAsynctask(Context context) {
+        StoreReservationAsynctask(Context context, String api_token) {
+            this.api_token =api_token;
             this.context = context;
         }
 
@@ -148,7 +150,7 @@ public class ReviewReservFragment extends Fragment {
             String returnValue = "";
             Reservation reservation = params[0];
             Log.d("StoreReservation ", reservation.storeReservation().toString());
-            String myURL = getString(R.string.base_url) + "reservation/store";
+            String myURL = getString(R.string.base_url) + "reservation/store?api_token="+api_token;
             if (networkUtils.isConnectedToServer(myURL)) {
                 JSONParser jsonParser = new JSONParser();
                 String request = jsonParser.postJSON(myURL, reservation.storeReservation());

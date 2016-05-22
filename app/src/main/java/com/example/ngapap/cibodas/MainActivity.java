@@ -8,14 +8,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.ngapap.cibodas.Activity.CatalogActivity;
-import com.example.ngapap.cibodas.Activity.MenuActivity;
+import com.example.ngapap.cibodas.Activity.NavActivity;
 import com.example.ngapap.cibodas.Model.Customer;
 import com.facebook.FacebookSdk;
 
@@ -28,7 +26,7 @@ import java.util.HashMap;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends MenuActivity {
+public class MainActivity extends NavActivity {
 //    SessionManager session;
 //    MenuActivity resideMenu;
     long lastPress;
@@ -38,7 +36,7 @@ public class MainActivity extends MenuActivity {
     ImageView _tourismLogo;
 //    @Bind(R.id.text_email) TextView _textEmail;
 //    @Bind(R.id.text_name) TextView _textName;
-
+    Customer customer ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +49,10 @@ public class MainActivity extends MenuActivity {
             finish();
         HashMap<String, String> user = session.getUserDetails();
         String data = user.get(SessionManager.KEY_DATA);
+        customer = new Customer();
         try {
             JSONArray jsonArray = new JSONArray(data);
-            Customer customer = new Customer();
+//            Customer customer = new Customer();
             customer = customer.toCustomer(jsonArray);
             Log.d("Attemp Update Data User",jsonArray.toString());
             UpdateUserAsyncTask task = new UpdateUserAsyncTask(MainActivity.this);
@@ -65,41 +64,41 @@ public class MainActivity extends MenuActivity {
             @Override
             public void onClick(View v) {
                 RequestCatalogAsynctask task = new RequestCatalogAsynctask(MainActivity.this);
-                task.execute("agribisnis");
+                task.execute("pertanian", customer.getApi_token());
             }
         });
         _tourismLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RequestCatalogAsynctask task = new RequestCatalogAsynctask(MainActivity.this);
-                task.execute("pariwisata");
+                task.execute("pariwisata", customer.getApi_token());
             }
         });
 
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public void onBackPressed() {
@@ -216,7 +215,8 @@ public class MainActivity extends MenuActivity {
         @Override
         protected String doInBackground(String... params) {
             String category = params[0].toString();
-            String myURL = getString(R.string.base_url) + "products/catalog?catalog=" + category;
+            String api_token = params[1];
+            String myURL = getString(R.string.base_url) + "products/catalog?api_token="+api_token+"&catalog=" + category;
             String result;
             if (networkUtils.isConnectedToServer(myURL)) {
                 JSONParser jsonParser = new JSONParser();

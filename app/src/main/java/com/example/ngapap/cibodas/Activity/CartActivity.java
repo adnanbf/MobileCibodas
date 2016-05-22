@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -62,12 +63,17 @@ public class CartActivity extends MenuActivity {
     private Reservation reservation;
     @Bind(R.id.linearMain)
     LinearLayout _linearMain;
+    private android.support.v7.app.ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         ButterKnife.bind(this);
+        actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         cartArrayList = new CartArrayList();
         myCalendar = Calendar.getInstance();
         listCart = cartArrayList.getFavorites(getApplicationContext());
@@ -99,8 +105,10 @@ public class CartActivity extends MenuActivity {
                 nullCartVisibility();
         } else
             nullCartVisibility();
+    }
 
-
+    public void setActionBarTitle(String title){
+        actionBar.setTitle(title);
     }
 
     public void setAmount(View vi) {
@@ -152,7 +160,6 @@ public class CartActivity extends MenuActivity {
                                     task = new SetTotalAsynctask(context);
                                     task.execute(cartArrayList.getFavorites(context));
                                 }
-
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -204,7 +211,7 @@ public class CartActivity extends MenuActivity {
                     String year = parts[0];
                     String month = parts[1];
                     String day = parts[2];
-                    _editDate.setText(day+"-"+month+"-"+year);
+                    _editDate.setText(day + "-" + month + "-" + year);
                     itemToEdit.setDate(sdf.format(myCalendar.getTime()));
                     cartArrayList.editFavorite(context, itemToEdit);
                     adapter.notifyDataSetChanged();
@@ -317,11 +324,24 @@ public class CartActivity extends MenuActivity {
     public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
+            if (getFragmentManager().getBackStackEntryCount() == 1) {
+                _linearMain.setVisibility(View.VISIBLE);
+            }
         } else {
             super.onBackPressed();
         }
-        if (getFragmentManager().getBackStackEntryCount() == 1) {
-            _linearMain.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                //do your action here.
+                onBackPressed();
+                break;
         }
+        return super.onOptionsItemSelected(item);
     }
 }
