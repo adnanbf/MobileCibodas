@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Go Back"
+        android:icon="@drawable/back_arrows"
+        android:id="@+id/nav_back"/>
+
+    <item
+        android:id="@+id/nav_agri"
+        android:icon="@drawable/icon_agri"
+        android:title="Pertanian" />
+    <item
+        android:id="@+id/nav_tour"
+        android:icon="@drawable/icon_tour"
+        android:title="Pariwisata" />
+    <item
+        android:id="@+id/nav_farm"
+        android:icon="@drawable/icon_farm"
+        android:title="Peternakan" />
+</menu>

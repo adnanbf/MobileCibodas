@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/adapter_review_reserv" />
+    <LinearLayout
+        android:background="@drawable/cart_row_selector"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentLeft="true">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/delivText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/thumbnail"
+                android:layout_toRightOf="@+id/thumbnail"
+                android:text="Sub Harga Pengiriman :"
+                android:textColor="@color/jet"
+                android:typeface="sans"
+                android:textSize="14dip"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:id="@+id/delivCost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rp 322"
+                android:textColor="@color/jet"
+                android:typeface="sans"
+                android:textSize="14dip"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="top|right"
+                android:layout_marginRight="17dp" />
+        </FrameLayout>
+
+    </LinearLayout>
+</LinearLayout>
