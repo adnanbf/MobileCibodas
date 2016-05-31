@@ -22,32 +22,38 @@ public class Product implements Serializable {
     private String id_seller;
     private String seller_name;
     private String id_price;
+    private String product_type;
     private int price;
     private int amount;
+    private int deliv_cost;
+    private int status;
     private String date;
     private String[] links;
 
     public Product toProduct(JSONArray jsonArray,int i){
         Product product=new Product();
             try {
-                product.setId(jsonArray.getJSONObject(i).getString("id_detail_product").toString());
-                product.setProduct_name(jsonArray.getJSONObject(i).getString("product_name").toString());
-                product.setProduct_rating(jsonArray.getJSONObject(i).getString("rating").toString());
-                product.setProduct_description(jsonArray.getJSONObject(i).getString("description").toString());
-                product.setStock(jsonArray.getJSONObject(i).getString("stock").toString());
-                product.setId_category(jsonArray.getJSONObject(i).getString("id_category").toString());
-                product.setCategory_name(jsonArray.getJSONObject(i).getString("category_name").toString());
-                product.setId_seller(jsonArray.getJSONObject(i).getString("id_seller").toString());
-                product.setSeller_name(jsonArray.getJSONObject(i).getString("seller_name").toString());
-                product.setId_price(jsonArray.getJSONObject(i).getString("id_price").toString());
+                product.setId(jsonArray.getJSONObject(i).getString("id_detail_product"));
+                product.setProduct_name(jsonArray.getJSONObject(i).getString("product_name"));
+                product.setProduct_rating(jsonArray.getJSONObject(i).getString("rating"));
+                product.setProduct_description(jsonArray.getJSONObject(i).getString("description"));
+                product.setStock(jsonArray.getJSONObject(i).getString("stock"));
+                product.setProduct_type(jsonArray.getJSONObject(i).getString("type_product"));
+                product.setId_category(jsonArray.getJSONObject(i).getString("id_category"));
+                product.setCategory_name(jsonArray.getJSONObject(i).getString("category_name"));
+                product.setId_seller(jsonArray.getJSONObject(i).getString("id_seller"));
+                product.setSeller_name(jsonArray.getJSONObject(i).getString("seller_name"));
+                product.setId_price(jsonArray.getJSONObject(i).getString("id_price"));
                 product.setPrice(jsonArray.getJSONObject(i).getInt("price"));
-                JSONArray jsonLink= new JSONArray(jsonArray.getJSONObject(i).getString("links").toString());
+                JSONArray jsonLink= new JSONArray(jsonArray.getJSONObject(i).getString("links"));
                 String[] arrayLink=new String[jsonLink.length()];
                 for(int j=0;j<jsonLink.length();j++){
-                    arrayLink[j]=jsonLink.getJSONObject(j).getString("link").toString();
+                    arrayLink[j]=jsonLink.getJSONObject(j).getString("link");
                     Log.d("Link :", arrayLink[j]);
+                    if(j==jsonLink.length()-1){
+                        product.setLinks(arrayLink);
+                    }
                 }
-                product.setLinks(arrayLink);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -187,5 +193,29 @@ public class Product implements Serializable {
 
     public void setId_price(String id_price) {
         this.id_price = id_price;
+    }
+
+    public int getDeliv_cost() {
+        return deliv_cost;
+    }
+
+    public void setDeliv_cost(int deliv_cost) {
+        this.deliv_cost = deliv_cost;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getProduct_type() {
+        return product_type;
+    }
+
+    public void setProduct_type(String product_type) {
+        this.product_type = product_type;
     }
 }

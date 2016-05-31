@@ -9,6 +9,13 @@
         <dex dex="E:\AndroidProject\Cibodas\app\build\intermediates\pre-dexed\debug\gson-2.2.3-4caa60ef2eca5150869382556da9018da414f0a5.jar" />
     </item>
     <item
+        jar="E:\AndroidProject\Cibodas\app\build\intermediates\exploded-aar\com.facebook.android\facebook-android-sdk\4.12.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="26645b518694e20a97fc19a6a3c3933c0cc41bc1">
+        <dex dex="E:\AndroidProject\Cibodas\app\build\intermediates\pre-dexed\debug\classes-5838d9aaf33ffd77a4768d227f3f1c02a69c123d.jar" />
+    </item>
+    <item
         jar="C:\Users\user\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.4.0\support-annotations-23.4.0.jar"
         jumboMode="false"
         revision="23.0.1"
@@ -16,18 +23,11 @@
         <dex dex="E:\AndroidProject\Cibodas\app\build\intermediates\pre-dexed\debug\support-annotations-23.4.0-af3ff41e4f7c1efd311bba3c56bce336f57a0db8.jar" />
     </item>
     <item
-        jar="E:\AndroidProject\Cibodas\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\libs\internal_impl-23.4.0.jar"
+        jar="E:\AndroidProject\Cibodas\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.4.0\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
-        <dex dex="E:\AndroidProject\Cibodas\app\build\intermediates\pre-dexed\debug\internal_impl-23.4.0-139f204b1608a859bce2c6b1fe16f4030bad5c9a.jar" />
-    </item>
-    <item
-        jar="E:\AndroidProject\Cibodas\app\build\intermediates\exploded-aar\com.facebook.android\facebook-android-sdk\4.12.0\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="384a601bf7671716768cc8586f39816a08ce74c3">
-        <dex dex="E:\AndroidProject\Cibodas\app\build\intermediates\pre-dexed\debug\classes-b41cd00f1850e98e8199ecf086f5379b625506cf.jar" />
+        sha1="d9ecde39b460470e655de6e47c05573d2d5a8bfb">
+        <dex dex="E:\AndroidProject\Cibodas\app\build\intermediates\pre-dexed\debug\classes-97c41a68ad2003f5f830521224740233ba453e67.jar" />
     </item>
     <item
         jar="E:\AndroidProject\Cibodas\app\build\intermediates\exploded-aar\com.android.support\customtabs\23.4.0\jars\classes.jar"
@@ -44,11 +44,11 @@
         <dex dex="E:\AndroidProject\Cibodas\app\build\intermediates\pre-dexed\debug\classes-497f00ea810fa1f60825afbdfaf33e7020552b7c.jar" />
     </item>
     <item
-        jar="E:\AndroidProject\Cibodas\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.4.0\jars\classes.jar"
+        jar="E:\AndroidProject\Cibodas\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\libs\internal_impl-23.4.0.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="d9ecde39b460470e655de6e47c05573d2d5a8bfb">
-        <dex dex="E:\AndroidProject\Cibodas\app\build\intermediates\pre-dexed\debug\classes-97c41a68ad2003f5f830521224740233ba453e67.jar" />
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="E:\AndroidProject\Cibodas\app\build\intermediates\pre-dexed\debug\internal_impl-23.4.0-139f204b1608a859bce2c6b1fe16f4030bad5c9a.jar" />
     </item>
 
 </items>

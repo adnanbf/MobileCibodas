@@ -60,7 +60,7 @@ public class ReviewReservAdapter extends ArrayAdapter<Product> {
 
         //set Values
         _sellerName.setText(product.getSeller_name());
-        if(product.getLinks().length>=1){
+        if(product.getLinks()!=null){
             imageLoader.DisplayImage(product.getLinks()[0],_listImage);
         }else {
             _listImage.setImageResource(R.drawable.stub);
@@ -68,9 +68,9 @@ public class ReviewReservAdapter extends ArrayAdapter<Product> {
         _productName.setText(product.getProduct_name());
         _price.setText("Rp "+String.valueOf(product.getPrice()));
         _category.setText(product.getCategory_name());
-        _textJumlah.setText("Kuantitas : "+String.valueOf(product.getAmount()));
+        _textJumlah.setText("Quantity : "+String.valueOf(product.getAmount()));
         if(product.getCategory_name().equals("Pariwisata")){
-            _textJadwal.setText("Jadwal :"+product.getDate());
+            _textJadwal.setText("Schedule :"+product.getDate());
         }else{
             _textJadwal.setVisibility(View.INVISIBLE);
         }

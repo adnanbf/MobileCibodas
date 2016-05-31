@@ -11,9 +11,9 @@
         android:id="@+id/linearSlider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:clickable="true"
-        android:focusableInTouchMode="true">
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
 
         <!-- Product Images-->
         <LinearLayout
@@ -48,7 +48,7 @@
                 android:layout_width="145dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center|bottom"
-                android:text="Reserve" />
+                android:text="Beli" />
 
             <Button
                 android:id="@+id/buttonAddToCart"
@@ -56,7 +56,7 @@
                 android:layout_width="145dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center|bottom"
-                android:text="Add to Cart" />
+                android:text="Tambah Ke Cart" />
 
         </LinearLayout>
 
@@ -83,8 +83,8 @@
                 android:textSize="18dip"
                 android:textStyle="bold"
                 android:typeface="sans" />
-            <!--Produk Stok-->
 
+            <!--Produk Stok-->
 
             <TextView
                 android:id="@+id/containerStok"
@@ -98,10 +98,21 @@
                 android:textStyle="bold"
                 android:typeface="sans" />
 
+            <!--Produk Stok-->
+            <TextView
+                android:id="@+id/producType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:text="None"
+                android:textColor="@color/primary"
+                android:textSize="12dip"
+                android:textStyle="bold"
+                android:typeface="sans" />
+
 
             <!-- Product Price -->
-
-
             <TextView
                 android:id="@+id/containerPrice"
                 android:layout_width="wrap_content"
@@ -115,16 +126,14 @@
                 android:typeface="sans" />
 
 
-            <!--Produk Deskripsi-->
-
-
+            <!--Product Desc-->
             <TextView
                 android:id="@+id/textDeskripsi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
-                android:text="Deskirpsi :"
+                android:text="Deskripsi"
                 android:textColor="#040404"
                 android:textSize="12dip"
                 android:textStyle="normal"
@@ -143,6 +152,45 @@
                 android:text="asdasdsfsdagfdsagdsagadsgadsgdsagasdgasdgasdgsdgsdgsdgsadggdfdasfsdgdssgf dafdfdSFAD DFASFDS
                             DSAFDSFSADFASDFADSFSDFDSFDSAAFSD"
                 android:textColor="#040404"
+                android:textSize="12dip"
+                android:textStyle="bold"
+                android:typeface="sans" />
+
+        </LinearLayout>
+
+        <!-- Linear Seller-->
+        <LinearLayout
+            android:id="@+id/linearSeller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/product_selector"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/sellerDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:text="Produk ini dijual dan disediakan oleh :"
+                android:textColor="@color/monsoon"
+                android:textSize="15dip"
+                android:typeface="sans" />
+            <!--Produk Stok-->
+
+            <TextView
+                android:id="@+id/sellerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:text="In Stock"
+                android:textColor="@color/monsoon"
                 android:textSize="12dip"
                 android:textStyle="bold"
                 android:typeface="sans" />
@@ -172,14 +220,8 @@
                 android:rating="3.5"
                 android:theme="@style/RatingBar" />
 
-
         </LinearLayout>
 
-
-
-
-
     </LinearLayout>
-
 
 </ScrollView>

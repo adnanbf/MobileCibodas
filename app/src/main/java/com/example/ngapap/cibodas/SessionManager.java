@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.example.ngapap.cibodas.Activity.LoginActivity;
-import com.facebook.AccessToken;
-import com.facebook.login.LoginManager;
 
 import java.util.HashMap;
 
@@ -60,15 +58,16 @@ public class SessionManager {
 
     public void logoutUser(){
 
-        if(AccessToken.getCurrentAccessToken() != null){
-            LoginManager.getInstance().logOut();
-        }
+//        if(AccessToken.getCurrentAccessToken() != null){
+//            LoginManager.getInstance().logOut();
+//        }
         editor.clear();
         editor.commit();
         Intent intent = new Intent(_context, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         _context.startActivity(intent);
+
     }
 
 }

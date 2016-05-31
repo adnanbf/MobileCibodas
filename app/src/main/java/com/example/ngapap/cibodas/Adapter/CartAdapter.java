@@ -70,11 +70,11 @@ public class CartAdapter extends ArrayAdapter<Product> {
         }
 
         //In which you need put here
-        if (!holder.getProduct().getCategory_name().equals("Pariwisata")) {
+        if (!holder.getProduct().getCategory_name().equalsIgnoreCase("Pariwisata")) {
             _textJadwal.setVisibility(View.INVISIBLE);
             holder.get_editDate().setVisibility(View.INVISIBLE);
         }
-        if (listCatalog.get(position).getLinks().length >= 1) {
+        if (listCatalog.get(position).getLinks() != null) {
             Log.d("Link Image :", listCatalog.get(0).getLinks()[0]);
             imageLoader.DisplayImage(listCatalog.get(position).getLinks()[0], holder.get_imageProduct());
         } else {

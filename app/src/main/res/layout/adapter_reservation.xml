@@ -42,9 +42,8 @@
         android:text="Status"
         android:textColor="@color/blue"
         android:id="@+id/status_reservation"
-        android:layout_marginEnd="10dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="7dp" />
+        android:layout_below="@+id/date_reservation"
+        android:layout_alignStart="@+id/date_reservation"
+        android:layout_marginBottom="7dp" />
 
 </RelativeLayout>

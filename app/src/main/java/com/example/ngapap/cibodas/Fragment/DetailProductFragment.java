@@ -19,7 +19,6 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.example.ngapap.cibodas.Activity.CartActivity;
-import com.example.ngapap.cibodas.Activity.CatalogActivity;
 import com.example.ngapap.cibodas.CartArrayList;
 import com.example.ngapap.cibodas.Model.Product;
 import com.example.ngapap.cibodas.R;
@@ -38,6 +37,8 @@ public class DetailProductFragment extends Fragment implements BaseSliderView.On
     private TextView _product_stok;
     private TextView _product_desc;
     private TextView _product_price;
+    private TextView _product_type;
+    private TextView _seller_name;
     private Button _buttonReserve;
     private Button _buttonAddCart;
     private RatingBar _rtbProduct;
@@ -50,48 +51,55 @@ public class DetailProductFragment extends Fragment implements BaseSliderView.On
         _product_stok = (TextView) rootView.findViewById(R.id.containerStok);
         _product_desc = (TextView) rootView.findViewById(R.id.containerDeskripsi);
         _product_price = (TextView) rootView.findViewById(R.id.containerPrice);
+        _seller_name = (TextView) rootView.findViewById(R.id.sellerName);
+        _product_type = (TextView) rootView.findViewById(R.id.producType);
         _buttonReserve = (Button) rootView.findViewById(R.id.buttonReserve);
         _buttonAddCart = (Button) rootView.findViewById(R.id.buttonAddToCart);
         _rtbProduct = (RatingBar) rootView.findViewById(R.id.rtbProductRating);
         mDemoSlider = (SliderLayout) rootView.findViewById(R.id.slider);
-        ((CatalogActivity) getActivity()).getResideMenu().addIgnoredView(mDemoSlider);
+//        ((CatalogActivity) getActivity()).getResideMenu().addIgnoredView(mDemoSlider);
         product= (Product) this.getArguments().getSerializable("product");
         HashMap<String,String> url_maps = new HashMap<String, String>();
-        for(int i =0; i<product.getLinks().length;i++){
-            url_maps.put("image-"+i, product.getLinks()[i]);
+        if(product.getLinks()!=null){
+            for(int i =0; i<product.getLinks().length;i++){
+                url_maps.put("image-"+i, product.getLinks()[i]);
+            }
+            for(String name : url_maps.keySet()){
+                TextSliderView textSliderView = new TextSliderView(getActivity().getApplicationContext());
+                // initialize a SliderLayout
+                textSliderView
+                        .description(name)
+                        .image(url_maps.get(name))
+                        .setScaleType(BaseSliderView.ScaleType.Fit)
+                        .setOnSliderClickListener(this);
+
+                //add your extra information
+                textSliderView.bundle(new Bundle());
+                textSliderView.getBundle()
+                        .putString("extra",name);
+
+                mDemoSlider.addSlider(textSliderView);
+            }
+            mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+            mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+            mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+            mDemoSlider.setDuration(4000);
+            mDemoSlider.addOnPageChangeListener(this);
         }
-        for(String name : url_maps.keySet()){
-            TextSliderView textSliderView = new TextSliderView(getActivity().getApplicationContext());
-            // initialize a SliderLayout
-            textSliderView
-                    .description(name)
-                    .image(url_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.Fit)
-                    .setOnSliderClickListener(this);
 
-            //add your extra information
-            textSliderView.bundle(new Bundle());
-            textSliderView.getBundle()
-                    .putString("extra",name);
 
-            mDemoSlider.addSlider(textSliderView);
-        }
-        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
-        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-        mDemoSlider.setDuration(4000);
-        mDemoSlider.addOnPageChangeListener(this);
-
+        _seller_name.setText(product.getSeller_name());
         _product_name.setText(product.getProduct_name());
         _product_price.setText("Rp " + product.getPrice());
         _rtbProduct.setRating(Float.parseFloat(product.getProduct_rating()));
-        if(product.getCategory_name().equals("Pertanian")){
+        if(product.getCategory_name().equalsIgnoreCase("Pertanian")){
             if(product.getStock().equals("0")||Integer.parseInt(product.getStock())<5){
                 _product_stok.setText("Out of Stock");
                 _product_stok.setTextColor(Color.RED);
                 _buttonReserve.setEnabled(false);
                 _buttonAddCart.setEnabled(false);
             }
+            _product_type.setText(product.getProduct_type());
         }else{
             if(product.getStock().equals("0")){
                 _product_stok.setText("Out of Stock");
@@ -99,11 +107,11 @@ public class DetailProductFragment extends Fragment implements BaseSliderView.On
                 _buttonReserve.setEnabled(false);
                 _buttonAddCart.setEnabled(false);
             }
+            _product_type.setVisibility(View.GONE);
         }
 
         _product_desc.setText(product.getProduct_description());
         cartArrayList = new CartArrayList();
-
 
         _buttonReserve.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,19 +133,28 @@ public class DetailProductFragment extends Fragment implements BaseSliderView.On
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(product.getProduct_name());
+    }
+
     public void addToCart(){
         ArrayList<Product> listProduct = cartArrayList.getFavorites(getActivity());
         boolean checkCart = true;
-        switch (product.getCategory_name()){
-            case "Pariwisata":
+        switch (product.getCategory_name().toUpperCase()){
+            case "PARIWISATA":
                 product.setAmount(1);
                 String myFormat = "yyyy-MM-dd";
                 Date cDate = new Date();
                 String sDate = new SimpleDateFormat(myFormat).format(cDate);
                 product.setDate(sDate);
                 break;
-            case "Pertanian":
+            case "PERTANIAN":
                 product.setAmount(5);
+                break;
+            case "PETERNAKAN":
+                product.setAmount(1);
                 break;
         }
 

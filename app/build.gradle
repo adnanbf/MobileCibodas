@@ -10,6 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -27,6 +28,5 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'com.daimajia.slider:library:1.1.5@aar'
-    compile 'com.android.support:support-v4:23.2.0'
     compile files('libs/gson-2.2.3.jar')
 }

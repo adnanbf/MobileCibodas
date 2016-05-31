@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
-                finish();
+//                finish();
             }
         });
 
@@ -98,10 +98,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), ForgetPasswordActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
-                finish();
+//                finish();
             }
         });
 
@@ -157,17 +157,15 @@ public class LoginActivity extends AppCompatActivity {
                                 returnValue = "invalid";
                             }
 //                    session.createLoginSession(customer.getEmail(),jsonString);
-                        }else{
-                            returnValue="null";
                         }
                     }
                     Log.d("From LoginActivity", request);
                 }else{
                     returnValue = "notConnected";
                 }
-
             } catch (JSONException e) {
                 e.printStackTrace();
+                returnValue="null";
             }
             return returnValue;
         }

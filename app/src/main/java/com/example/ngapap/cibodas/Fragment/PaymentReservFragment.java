@@ -13,10 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.ngapap.cibodas.Activity.CartActivity;
-import com.example.ngapap.cibodas.Activity.MenuActivity;
-import com.example.ngapap.cibodas.Model.Reservation;
+import com.example.ngapap.cibodas.Activity.NavActivity;
 import com.example.ngapap.cibodas.R;
-import com.example.ngapap.cibodas.SessionManager;
 
 /**
  * Created by user on 05/05/2016.
@@ -26,18 +24,17 @@ public class PaymentReservFragment extends Fragment {
     private EditText _inputAccount;
     private Button _btnConfirm;
     String bankName = "BANK_NAME";
-    SessionManager sessionManager;
-    Reservation reservation;
+//    SessionManager sessionManager;
     private int selectedBank = -1;
     private FragmentTransaction ft;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            selectedBank = savedInstanceState.getInt("curChoice", -1);
-        }
-    }
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        if (savedInstanceState != null) {
+//            selectedBank = savedInstanceState.getInt("curChoice", -1);
+//        }
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,25 +44,27 @@ public class PaymentReservFragment extends Fragment {
         _inputBank = (EditText) rootView.findViewById(R.id.input_bank);
         _inputAccount = (EditText) rootView.findViewById(R.id.input_account);
         _btnConfirm = (Button) rootView.findViewById(R.id.btn_confirm);
-        if (savedInstanceState != null) {
-            selectedBank = savedInstanceState.getInt("curChoice", -1);
-        }
-        if (((CartActivity) getActivity()).getReservation() == null) {
-            reservation = new Reservation();
-        } else {
-            reservation = ((CartActivity) getActivity()).getReservation();
+//        if (savedInstanceState != null) {
+//            selectedBank = savedInstanceState.getInt("curChoice", -1);
+//        }
+        if (((CartActivity) getActivity()).getReservation().getBank_name()!= null) {
             _inputBank.setText(((CartActivity) getActivity()).getReservation().getBank_name());
+        }
+        if (((CartActivity) getActivity()).getReservation().getBank_account()!= null) {
             _inputAccount.setText(((CartActivity) getActivity()).getReservation().getBank_account());
         }
+
+
+
+
         _inputAccount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    ((MenuActivity) getActivity()).hideKeyboard(v);
+                    ((NavActivity) getActivity()).hideKeyboard(v);
                 }
             }
         });
-
 
         //setListener
         _inputBank.setOnClickListener(new View.OnClickListener() {
@@ -74,14 +73,16 @@ public class PaymentReservFragment extends Fragment {
                 dialogBank();
             }
         });
+
         ft = getFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left,
+                R.animator.slide_in_left, R.animator.slide_out_left);
         _btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (validate()) {
                     Log.d("from button confirm:", _inputAccount.getText().toString());
-                    reservation.setBank_account(_inputAccount.getText().toString());
-                    ((CartActivity) getActivity()).setReservation(reservation);
+                    ((CartActivity) getActivity()).getReservation().setBank_account(_inputAccount.getText().toString());
                     ft.replace(R.id.frame, new ReviewReservFragment());
                     ft.addToBackStack(PaymentReservFragment.class.getName());
                     ft.commit();
@@ -90,6 +91,12 @@ public class PaymentReservFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle("Pilih Bank");
     }
 
     private void dialogBank() {
@@ -108,25 +115,25 @@ public class PaymentReservFragment extends Fragment {
                     case 0:
                         _inputBank.setText("Bank Mandiri");
                         _inputBank.setFreezesText(true);
-                        reservation.setBank_name("Bank Mandiri");
+                        ((CartActivity) getActivity()).getReservation().setBank_name(_inputBank.getText().toString());
                         bankName = "Bank Mandiri";
                         break;
                     case 1:
                         _inputBank.setText("BCA");
                         _inputBank.setFreezesText(true);
-                        reservation.setBank_name("BCA");
+                        ((CartActivity) getActivity()).getReservation().setBank_name(_inputBank.getText().toString());
                         bankName = "BCA";
                         break;
                     case 2:
                         _inputBank.setText("BNI");
                         _inputBank.setFreezesText(true);
-                        reservation.setBank_name("BNI");
+                        ((CartActivity) getActivity()).getReservation().setBank_name(_inputBank.getText().toString());
                         bankName = "BNI";
                         break;
                     case 3:
                         _inputBank.setText("BRI");
                         _inputBank.setFreezesText(true);
-                        reservation.setBank_name("BRI");
+                        ((CartActivity) getActivity()).getReservation().setBank_name(_inputBank.getText().toString());
                         bankName = "BRI";
                         break;
                     default:
@@ -161,27 +168,27 @@ public class PaymentReservFragment extends Fragment {
         }
         return isValid;
     }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            // Restore last state for checked position.
-            selectedBank = savedInstanceState.getInt("curChoice", -1);
-            bankName = savedInstanceState.getString("bankName");
-            reservation = (Reservation) savedInstanceState.getSerializable("reservation");
-            Log.d("From onActivityCreated", bankName);
-        }
-
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("curChoice", selectedBank);
-        outState.putString("bankName", bankName);
-        outState.putSerializable("reservation", reservation);
-    }
+//
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        if (savedInstanceState != null) {
+//            // Restore last state for checked position.
+//            selectedBank = savedInstanceState.getInt("curChoice", -1);
+//            bankName = savedInstanceState.getString("bankName");
+//            reservation = (Reservation) savedInstanceState.getSerializable("reservation");
+//            Log.d("From onActivityCreated", bankName);
+//        }
+//
+//    }
+//
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putInt("curChoice", selectedBank);
+//        outState.putString("bankName", bankName);
+//        outState.putSerializable("reservation", reservation);
+//    }
 
 
 }

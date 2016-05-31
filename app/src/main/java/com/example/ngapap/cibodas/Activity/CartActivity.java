@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -40,7 +42,7 @@ import butterknife.ButterKnife;
 /**
  * Created by user on 24/04/2016.
  */
-public class CartActivity extends MenuActivity {
+public class CartActivity extends NavActivity {
     private ListView _listCart;
     private ArrayList<Product> listCart;
     Context context = CartActivity.this;
@@ -61,21 +63,22 @@ public class CartActivity extends MenuActivity {
     SetTotalAsynctask task;
     Calendar myCalendar;
     private Reservation reservation;
+    private int addressPosition;
     @Bind(R.id.linearMain)
     LinearLayout _linearMain;
-    private android.support.v7.app.ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart);
+//        setContentView(R.layout.activity_cart);
+        LayoutInflater inflater = getLayoutInflater();
+        LinearLayout container = (LinearLayout) findViewById(R.id.content_frame);
+        inflater.inflate(R.layout.activity_cart, container);
         ButterKnife.bind(this);
-        actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+//        disableNavIcon();
         cartArrayList = new CartArrayList();
         myCalendar = Calendar.getInstance();
+        listCart = new ArrayList<>();
         listCart = cartArrayList.getFavorites(getApplicationContext());
         _listCart = (ListView) findViewById(R.id.listCart);
 //        Log.d("From Cart", g.getData().get(0).getProduct_name());
@@ -92,23 +95,49 @@ public class CartActivity extends MenuActivity {
                     public void onClick(View v) {
 //                        Intent intent = new Intent(CartActivity.this,ReservationActivity.class);
 //                        startActivity(intent);
-
-                        AddressReservFragment fragment = new AddressReservFragment();
-                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.frame, fragment);
-                        fragmentTransaction.addToBackStack(CartActivity.class.getName());
-                        _linearMain.setVisibility(View.INVISIBLE);
-                        fragmentTransaction.commit();
+                        if (validateDate()) {
+                            reservation = new Reservation();
+                            reservation.setProducts(listCart);
+                            AddressReservFragment fragment = new AddressReservFragment();
+                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                            fragmentTransaction.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left,
+                                    R.animator.slide_in_left, R.animator.slide_out_left);
+                            fragmentTransaction.replace(R.id.frame, fragment, AddressReservFragment.class.getName());
+                            fragmentTransaction.addToBackStack(CartActivity.class.getName());
+                            _linearMain.setVisibility(View.INVISIBLE);
+                            disableNavIcon();
+                            fragmentTransaction.commit();
+                        }
                     }
                 });
-            } else
+            } else {
                 nullCartVisibility();
-        } else
+            }
+
+        } else {
             nullCartVisibility();
+        }
+
+
     }
 
-    public void setActionBarTitle(String title){
-        actionBar.setTitle(title);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setTitle(R.string.shop_cart);
+        onNavigationItemSelected(3);
+
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+                    disableNavIcon();
+//                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                } else {
+                    Log.d("from back stack :", "shitstain");
+                }
+            }
+        });
     }
 
     public void setAmount(View vi) {
@@ -135,7 +164,7 @@ public class CartActivity extends MenuActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 String input = userInput.getText().toString();
                                 int minInput;
-                                if (itemToEdit.getCategory_name().equals("Pariwisata")) {
+                                if (itemToEdit.getCategory_name().equals("pariwisata")) {
                                     minInput = 1;
                                 } else {
                                     minInput = 5;
@@ -176,6 +205,29 @@ public class CartActivity extends MenuActivity {
         alertDialog.show();
     }
 
+    private boolean validateDate() {
+        boolean validate = true;
+        for (int i = 0; i < listCart.size(); i++) {
+            if (listCart.get(i).getCategory_name().equals("pariwisata")) {
+                String[] cParts = listCart.get(i).getDate().split("-");
+                String cYear = cParts[0];
+                String cMonth = cParts[1];
+                String cDay = cParts[2];
+                myCalendar.set(Calendar.YEAR, Integer.parseInt(cYear));
+                myCalendar.set(Calendar.MONTH, Integer.parseInt(cMonth));
+                myCalendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(cDay));
+                long cDate = myCalendar.getTimeInMillis();
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, -1);
+                long yesterday = cal.getTimeInMillis();
+                if (cDate <= yesterday)
+                    validate = false;
+            }
+        }
+        return validate;
+    }
+
+
     public void setDate(View vi) {
         CartAdapter.CartHolder holder = (CartAdapter.CartHolder) vi.getTag();
         final TextView _editDate = holder.get_editDate();
@@ -196,14 +248,15 @@ public class CartActivity extends MenuActivity {
                 cal.add(Calendar.DATE, -1);
                 long yesterday = cal.getTimeInMillis();
                 cal.add(Calendar.DATE, 30);
-                long afterday = cal.getTimeInMillis();
+                long tomorrow = cal.getTimeInMillis();
                 myCalendar.set(Calendar.YEAR, selectedYear);
                 myCalendar.set(Calendar.MONTH, selectedMonth);
                 myCalendar.set(Calendar.DAY_OF_MONTH, selectedDay);
                 long sDate = myCalendar.getTimeInMillis();
+
                 boolean validate = true;
 //                myCalendar.add(Calendar.DATE,30);
-                if (sDate <= yesterday || sDate >= afterday) {
+                if (sDate <= yesterday || sDate >= tomorrow) {
                     validate = false;
                 }
                 if (validate) {
@@ -227,7 +280,6 @@ public class CartActivity extends MenuActivity {
                 myCalendar.get(Calendar.YEAR),
                 myCalendar.get(Calendar.MONTH),
                 myCalendar.get(Calendar.DAY_OF_MONTH));
-
         datePicker.show();
     }
 
@@ -237,6 +289,14 @@ public class CartActivity extends MenuActivity {
 
     public void setReservation(Reservation reservation) {
         this.reservation = reservation;
+    }
+
+    public int getAddressPosition() {
+        return addressPosition;
+    }
+
+    public void setAddressPosition(int addressPosition) {
+        this.addressPosition = addressPosition;
     }
 
     private class SetTotalAsynctask extends AsyncTask<ArrayList<Product>, String, int[]> {
@@ -274,7 +334,7 @@ public class CartActivity extends MenuActivity {
         @Override
         protected void onPostExecute(int[] ints) {
             progressDialog.dismiss();
-            _textTotalItem.setText(String.valueOf(ints[0]));
+            _textTotalItem.setText(String.valueOf(ints[0]) + " Item(s)");
             _textTotalPrice.setText("Rp " + String.valueOf(ints[1]));
             super.onPostExecute(ints);
         }
@@ -322,9 +382,13 @@ public class CartActivity extends MenuActivity {
 
     @Override
     public void onBackPressed() {
+        final Handler handler = new Handler();
         if (getFragmentManager().getBackStackEntryCount() > 0) {
+//            disableNavIcon();
             getFragmentManager().popBackStack();
             if (getFragmentManager().getBackStackEntryCount() == 1) {
+                enableNavIcon();
+                setTitle(R.string.shop_cart);
                 _linearMain.setVisibility(View.VISIBLE);
             }
         } else {
@@ -340,8 +404,9 @@ public class CartActivity extends MenuActivity {
             case android.R.id.home:
                 //do your action here.
                 onBackPressed();
-                break;
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

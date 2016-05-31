@@ -1,21 +1,19 @@
 package com.example.ngapap.cibodas.Fragment;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
-import com.example.ngapap.cibodas.Activity.CatalogActivity;
-import com.example.ngapap.cibodas.Activity.MenuActivity;
 import com.example.ngapap.cibodas.Adapter.CatalogContentAdapter;
 import com.example.ngapap.cibodas.Model.Product;
 import com.example.ngapap.cibodas.R;
@@ -31,20 +29,23 @@ public class CatalogFragment extends android.app.Fragment  {
     private ListView _listCatalog;
     private ArrayList<Product> listCatalog;
     private int selectedSort = -1;
-    Button _text;
+    private FloatingActionButton _fab;
     CatalogContentAdapter adapter;
     @Override
+    @SuppressWarnings("unchecked")
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView= inflater.inflate(R.layout.fragment_catalog, null);
-//        listCatalog = (ArrayList<Product>) this.getArguments().getSerializable("catalog");
+        rootView= inflater.inflate(R.layout.activity_catalog, null);
 
-        listCatalog=((CatalogActivity) getActivity()).getListProduct();
+        listCatalog = (ArrayList<Product>) this.getArguments().getSerializable("listProduct");
+
+//        listCatalog=((Catalog) getActivity()).getListProduct();
 //        getArguments().remove("catalog");
 //        Log.d("From Fragment", listCatalog.get(0).getProduct_name());
         _listCatalog= (ListView) rootView.findViewById(R.id.list);
+        _fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         adapter=new CatalogContentAdapter(getActivity(),listCatalog);
         _listCatalog.setAdapter(adapter);
-        ((MenuActivity) getActivity()).setListViewHeightBasedOnChildren(_listCatalog);
+//        ((MenuActivity) getActivity()).setListViewHeightBasedOnChildren(_listCatalog);
 //        _listCatalog.setAdapter(new CatalogContentAdapter(getActivity(), listCatalog));
 
         _listCatalog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -56,44 +57,51 @@ public class CatalogFragment extends android.app.Fragment  {
                 DetailProductFragment detailProductFragment = new DetailProductFragment();
                 detailProductFragment.setArguments(bundle);
                 android.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left,
+                        R.animator.slide_in_left, R.animator.slide_out_left);
                 fragmentTransaction.replace(R.id.frame, detailProductFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
-        _text = (Button) rootView.findViewById(R.id.test);
 
-        _text.setOnClickListener(new View.OnClickListener() {
+
+
+
+        _fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                final CharSequence[] items = {" Rating"," Harga Tinggi ke Rendah"," Harga Rendah ke Tinggi "};
-                builder.setTitle("Sort by").setCancelable(false)
-                        .setSingleChoiceItems(items, selectedSort, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                selectedSort=which;
-                            }
-                        }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        int selectedPost= ((AlertDialog)dialog).getListView().getCheckedItemPosition();
-                        Log.d("From Dialog", String.valueOf(selectedPost));
-                        SortAsyncTask task = new SortAsyncTask(getActivity());
-                        task.execute(String.valueOf(selectedPost));
-                    }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.create();
-                builder.show();
+                dialogSort();
             }
         });
         return rootView;
     }
 
+    private void dialogSort(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final CharSequence[] items = {" Rating"," Harga Tinggi ke Rendah"," Harga Rendah ke Tinggi "};
+        builder.setTitle("Sort by").setCancelable(false)
+                .setSingleChoiceItems(items, selectedSort, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        selectedSort=which;
+                    }
+                }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int selectedPost= ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+                Log.d("From Dialog", String.valueOf(selectedPost));
+                SortAsyncTask task = new SortAsyncTask(getActivity());
+                task.execute(String.valueOf(selectedPost));
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.create();
+        builder.show();
+    }
 
     private class SortAsyncTask extends AsyncTask<String,String,String>{
         private Context context;
@@ -138,4 +146,5 @@ public class CatalogFragment extends android.app.Fragment  {
             super.onPostExecute(s);
         }
     }
+
 }

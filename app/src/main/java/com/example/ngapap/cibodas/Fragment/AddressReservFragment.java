@@ -13,11 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ListView;
 
-import com.example.ngapap.cibodas.Activity.MenuActivity;
+import com.example.ngapap.cibodas.Activity.CartActivity;
+import com.example.ngapap.cibodas.Activity.NavActivity;
+import com.example.ngapap.cibodas.Adapter.AddressReservAdapter;
 import com.example.ngapap.cibodas.JSONParser;
 import com.example.ngapap.cibodas.Model.Customer;
+import com.example.ngapap.cibodas.Model.Reservation;
 import com.example.ngapap.cibodas.NetworkUtils;
 import com.example.ngapap.cibodas.R;
 import com.example.ngapap.cibodas.SessionManager;
@@ -32,13 +35,14 @@ import java.util.HashMap;
  * Created by user on 01/05/2016.
  */
 public class AddressReservFragment extends Fragment {
-    private EditText _inputStreet;
-    private EditText _inputZipCode;
-    private EditText _inputCity;
-    private EditText _inputProv;
+
     private Button _btnAddress;
     private Button _btnPayment;
     private Customer customer;
+    private ListView _listAddress;
+    private AddressReservAdapter adapter;
+    private Reservation reservation;
+    private int addressPosition;
     int mCurCheckPosition = 0;
     SessionManager sessionManager;
     NetworkUtils networkUtils;
@@ -46,15 +50,14 @@ public class AddressReservFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView= inflater.inflate(R.layout.fragment_address_reserv,null);
-        _inputStreet = (EditText) rootView.findViewById(R.id.input_street);
-        _inputZipCode = (EditText) rootView.findViewById(R.id.input_zip_code);
-        _inputCity = (EditText) rootView.findViewById(R.id.input_city);
-        _inputProv = (EditText) rootView.findViewById(R.id.input_province);
+        View rootView = inflater.inflate(R.layout.fragment_address_reserv, null);
+
         _btnAddress = (Button) rootView.findViewById(R.id.btn_address);
         _btnPayment = (Button) rootView.findViewById(R.id.btn_payment);
+        _listAddress = (ListView) rootView.findViewById(R.id.listAddress);
         sessionManager = new SessionManager(getActivity());
         networkUtils = new NetworkUtils(getActivity());
+
         HashMap<String, String> user = sessionManager.getUserDetails();
         String data = user.get(SessionManager.KEY_DATA);
         customer = new Customer();
@@ -64,78 +67,162 @@ public class AddressReservFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        if (((CartActivity) getActivity()).getReservation() == null) {
+            reservation = new Reservation();
+        } else {
+            reservation = ((CartActivity) getActivity()).getReservation();
+            if (reservation.getId_delivery() != null) {
+                for (int i = 0; i < customer.getListAddresses().size(); i++) {
+                    int reserv_deliv = Integer.parseInt(reservation.getId_delivery());
+                    int id_deliv = Integer.parseInt(customer.getListAddresses().get(i).getDelivery_id());
+                    if (id_deliv == reserv_deliv) {
+                        addressPosition = i;
+                        adapter.selectedPosition = addressPosition;
+                    }
+                }
+            }
+
+        }
+
+        adapter = new AddressReservAdapter(getActivity(), customer.getListAddresses());
+        _listAddress.setAdapter(adapter);
+
+        ((NavActivity) getActivity()).setListViewHeightBasedOnChildren(_listAddress);
         Log.d("From Fragment Address :", customer.getStreet());
-        _inputStreet.setText(customer.getStreet());
-        _inputStreet.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    ((MenuActivity) getActivity()).hideKeyboard(v);
-                }
-            }
-        });
-        _inputCity.setText(customer.getCity());
-        _inputCity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    ((MenuActivity) getActivity()).hideKeyboard(v);
-                }
-            }
-        });
-        _inputProv.setText(customer.getProvince());
-        _inputProv.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    ((MenuActivity) getActivity()).hideKeyboard(v);
-                }
-            }
-        });
-        _inputZipCode.setText(customer.getZip_code());
-        _inputZipCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    ((MenuActivity) getActivity()).hideKeyboard(v);
-                }
-            }
-        });
+
+        ft = getFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left,
+                R.animator.slide_in_left, R.animator.slide_out_left);
 
         _btnAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String street =_inputStreet.getText().toString();
-                String zip_code = _inputZipCode.getText().toString();
-                String city = _inputCity.getText().toString();
-                String prov = _inputProv.getText().toString();
-                UpdateAddressAsyncTask task = new UpdateAddressAsyncTask(getActivity());
-                task.execute(customer.getUser_id(), street, city, prov, zip_code, customer.getApi_token());
+                addressPosition = adapter.selectedPosition;
+                ft.replace(R.id.frame, new NewAddressFragment());
+                ft.addToBackStack(AddressReservFragment.class.getName());
+                ft.commit();
+
+                Log.d("Fragment Address Pos", String.valueOf(addressPosition));
             }
         });
-
-         ft = getFragmentManager().beginTransaction();
 
         _btnPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!_inputStreet.getText().toString().equals(customer.getStreet()) ||
-                        !_inputZipCode.getText().toString().equals(customer.getZip_code()) ||
-                        !_inputCity.getText().toString().equals(customer.getCity()) ||
-                        !_inputProv.getText().toString().equals(customer.getProvince()) ){
-                    dialogAddress();
-                } else {
-                    ft.replace(R.id.frame, new PaymentReservFragment());
-                    ft.addToBackStack(AddressReservFragment.class.getName());
-                    ft.commit();
+                addressPosition = adapter.selectedPosition;
+                reservation.setId_delivery(customer.getListAddresses().get(addressPosition).getDelivery_id());
+                reservation.setAddress(customer.getListAddresses().get(addressPosition));
 
-                }
+                CostDelivCheck task = new CostDelivCheck(getActivity(), reservation);
+                task.execute();
+//                ft.replace(R.id.frame, new PaymentReservFragment());
+//                ft.addToBackStack(AddressReservFragment.class.getName());
+//                ft.commit();
             }
         });
+
         return rootView;
     }
 
-    private void dialogAddress(){
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle("Alamat Pengiriman");
+    }
+
+    private class CostDelivCheck extends AsyncTask<Void, Void, String> {
+        Context context;
+        Reservation mReservation;
+        private ProgressDialog progressDialog;
+
+        public CostDelivCheck(Context context, Reservation reservation) {
+            this.context = context;
+            this.mReservation = reservation;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(context, R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage(getString(R.string.dialog_loading));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String returnValue = "";
+            if (networkUtils.isConnectingToInternet()) {
+                try {
+                    JSONParser jsonParser = new JSONParser();
+                    int destination = mReservation.getAddress().getmCity().getId();
+//                    String destination = "74";
+                    Log.d("City", String.valueOf(destination));
+                    for (int i = 0; i < mReservation.getProducts().size(); i++) {
+                        if (mReservation.getProducts().get(i).getCategory_name().equalsIgnoreCase("pertanian")) {
+                            int amount = mReservation.getProducts().get(i).getAmount();
+                            int weight = amount * 1000;
+                            String param = "origin=24&destination=" + destination + "&weight=" + weight + "&courier=jne";
+                            Log.d("param", param);
+                            String request = jsonParser.checkDelivCost(param);
+                            Log.d("CostDelivCheck", request);
+                            JSONObject response = new JSONObject(request);
+                            int deliv_cost = response.getJSONObject("rajaongkir").getJSONArray("results").
+                                    getJSONObject(0).getJSONArray("costs").getJSONObject(0).getJSONArray("cost").getJSONObject(0).
+                                    getInt("value");
+//                            ((CartActivity) getActivity()).getReservation().getProducts().get(i).setDeliv_cost(deliv_cost);
+                            mReservation.getProducts().get(i).setDeliv_cost(deliv_cost);
+                            Log.d("deliv cost", String.valueOf(mReservation.getProducts().get(i).getDeliv_cost()));
+                        }else{
+//                            ((CartActivity) getActivity()).getReservation().getProducts().get(i).setDeliv_cost(0);
+                        }
+                    }
+                    ((CartActivity) getActivity()).setReservation(mReservation);
+                    returnValue = "connected";
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    returnValue = "DBproblem";
+                }
+            }else{
+                returnValue = "notConnected";
+            }
+            return returnValue;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            progressDialog.dismiss();
+            AlertDialog.Builder alert = new AlertDialog.Builder(context, R.style.AppTheme_Dark_Dialog);
+            switch (s){
+                case "connected":
+
+                    ft.replace(R.id.frame, new DeliveryCostFragment());
+                    ft.addToBackStack(AddressReservFragment.class.getName());
+                    ft.commit();
+                    Log.d("From Update User", s);
+                    break;
+                case "notConnected":
+                    alert.setTitle(getString(R.string.con_problem));
+                    alert.setMessage(getString(R.string.serv_problem));
+                    alert.setPositiveButton("OK", null);
+                    alert.show();
+                    break;
+                case "DBproblem":
+                    Log.d("From Update User", s);
+                    alert.setTitle(getString(R.string.db_problem));
+                    alert.setMessage(getString(R.string.db_connection));
+                    alert.setPositiveButton("OK", null);
+                    alert.show();
+            }
+            super.onPostExecute(s);
+        }
+    }
+
+
+    private void dialogAddress() {
         android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(getActivity());
         // Setting Dialog Title
         alertDialog.setTitle("Address Has not Been Updated");
@@ -145,10 +232,10 @@ public class AddressReservFragment extends Fragment {
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // Write your code here to invoke YES event
-                _inputStreet.setText(customer.getStreet());
-                _inputZipCode.setText(customer.getZip_code());
-                _inputCity.setText(customer.getCity());
-                _inputProv.setText(customer.getProvince());
+//                _inputStreet.setText(customer.getStreet());
+//                _inputZipCode.setText(customer.getZip_code());
+//                _inputCity.setText(customer.getCity());
+//                _inputProv.setText(customer.getProvince());
                 ft.replace(R.id.frame, new PaymentReservFragment(), "Payment Reserve Fragment");
                 ft.addToBackStack(null);
                 ft.commit();
@@ -170,7 +257,8 @@ public class AddressReservFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putInt("curChoice", mCurCheckPosition);
     }
-//
+
+    //
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -181,96 +269,5 @@ public class AddressReservFragment extends Fragment {
         }
     }
 
-    private class UpdateAddressAsyncTask extends AsyncTask<String,String,String>{
-        private Context context;
-        private ProgressDialog progressDialog;
-        UpdateAddressAsyncTask(Context context){
-            this.context = context;
-        }
-        @Override
-        protected void onPreExecute() {
-            progressDialog = new ProgressDialog(context,
-                    R.style.AppTheme_Dark_Dialog);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setMessage(getString(R.string.dialog_message_update));
-            progressDialog.show();
-            super.onPreExecute();
-        }
 
-        @Override
-        protected String doInBackground(String... params) {
-            String id =params[0];
-            String street =params[1];
-            String city = params[2];
-            String prov = params[3];
-            String zip_code=params[4];
-            String api_token = params[5];
-            String returnValue="";
-            JSONObject object = new JSONObject();
-            String myURL = getString(R.string.base_url)+"customers/updateAddress?api_token="+api_token;
-            try {
-                if(networkUtils.isConnectedToServer(myURL)){
-                    object.put("user_id",id);
-                    object.put("street",street);
-                    object.put("city", city);
-                    object.put("province", prov);
-                    object.put("zip_code",zip_code);
-//                    object.put("api_token", api_token);
-                    JSONParser jsonParser = new JSONParser();
-                    String request =jsonParser.postJSON(myURL,object);
-                    if(!request.equals("DBproblem")){
-                        JSONObject response = new JSONObject(request);
-                        if(response.getBoolean("Response")){
-                            customer.setStreet(street);
-                            customer.setZip_code(zip_code);
-                            sessionManager.createLoginSession(customer.getEmail(), customer.createJSONArray().toString());
-                            returnValue= "valid";
-                        }else{
-                            returnValue="invalid";
-                        }
-                    }
-                }else{
-                    returnValue="notConnected";
-                }
-                return returnValue;
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return returnValue;
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            AlertDialog.Builder alert= new AlertDialog.Builder(context,R.style.AppTheme_Dark_Dialog);
-            switch (s){
-                case "valid":
-                    alert.setTitle("Update Success");
-                    alert.setMessage("Your Address Has Been Updated");
-                    alert.setPositiveButton("OK", null);
-                    alert.show();
-                    break;
-                case "invalid":
-                    alert.setTitle("Update Failed");
-                    alert.setMessage("Failed to Update Address");
-                    alert.setPositiveButton("OK",null);
-                    alert.show();
-                    break;
-                case "notConnected":
-                    alert.setTitle(getString(R.string.con_problem));
-                    alert.setMessage(getString(R.string.serv_problem));
-                    alert.setPositiveButton("OK", null);
-                    alert.show();
-                    break;
-                default:
-                    Log.d("Address Reserve", s);
-                    alert.setTitle(getString(R.string.db_problem));
-                    alert.setMessage(getString(R.string.db_connection));
-                    alert.setPositiveButton("OK", null);
-                    alert.show();
-            }
-            progressDialog.dismiss();
-            super.onPostExecute(s);
-        }
-    }
 }

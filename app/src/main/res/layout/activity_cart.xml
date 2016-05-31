@@ -4,6 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fillViewport="true"
+    android:animateLayoutChanges="true"
     android:fitsSystemWindows="true">
 
     <FrameLayout
@@ -130,10 +131,10 @@
 
                 <Button
                     android:id="@+id/buttonConfirmResevation"
-                    android:layout_width="145dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|center|bottom"
-                    android:text="Confirm Reservation" />
+                    android:text="Check Out Reservation" />
             </LinearLayout>
 
 

@@ -2,6 +2,7 @@ package com.example.ngapap.cibodas.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,13 +50,13 @@ public class ReservationAdapter extends ArrayAdapter<Reservation> {
         _dateReservation = (TextView) rowView.findViewById(R.id.date_reservation);
         _statReservation = (TextView) rowView.findViewById(R.id.status_reservation);
         //set value
-        _noReservation.setText("Reservasi #"+listReservation.get(position).getId_reservation());
+        _noReservation.setText("Pesanan #"+listReservation.get(position).getId_reservation());
         String[] parts =listReservation.get(position).getCreated_at().split("-");
         String year = parts[0];
         String month = parts[1];
         String day = parts[2].substring(0,2);
         String time = parts[2].substring(3,8);
-        _dateReservation.setText("Dipesan pada tanggal "+day + "-" + month + "-" + year+" jam "+time);
+        _dateReservation.setText("Dipesan Pada "+day + "-" + month + "-" + year+", "+time);
         int status = listReservation.get(position).getStatus();
         switch (status){
             case 0:
@@ -64,6 +65,20 @@ public class ReservationAdapter extends ArrayAdapter<Reservation> {
                 break;
             case 1:
                 _statReservation.setText("Pembayaran Sedang Diproses");
+                _statReservation.setTextColor(ContextCompat.getColor(context, R.color.primary_dark));
+                break;
+            case 2:
+                _statReservation.setText("Pesanan Sedang Diproses");
+                _statReservation.setTextColor(ContextCompat.getColor(context, R.color.blue));
+                break;
+            case 3:
+                _statReservation.setText("Pembayaran Tidak Valid");
+                _statReservation.setTextColor(Color.RED);
+                break;
+            case 4:
+                _statReservation.setText("Pesanan Ditutup");
+                _statReservation.setTextColor(ContextCompat.getColor(context, R.color.monsoon));
+                break;
         }
         return rowView;
     }

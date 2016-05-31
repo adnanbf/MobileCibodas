@@ -46,7 +46,7 @@
                 android:id="@+id/input_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Name"
+                android:hint="Nama"
                 android:inputType="textCapWords" />
         </android.support.design.widget.TextInputLayout>
 
@@ -99,22 +99,7 @@
                 android:id="@+id/input_street"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Street"
-                android:inputType="textCapWords" />
-        </android.support.design.widget.TextInputLayout>
-
-        <!-- City Label -->
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
-
-            <EditText
-                android:id="@+id/input_city"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="City"
+                android:hint="Alamat"
                 android:inputType="textCapWords" />
         </android.support.design.widget.TextInputLayout>
 
@@ -129,8 +114,23 @@
                 android:id="@+id/input_province"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Province"
-                android:inputType="textCapWords" />
+                android:hint="Provinsi"
+                android:focusableInTouchMode="false"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- City Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/input_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Kota"
+                android:focusableInTouchMode="false" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- ZipCode Label -->
@@ -144,7 +144,7 @@
                 android:id="@+id/input_zip_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Zip Code"
+                android:hint="Kode Pos"
                 android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 
@@ -159,7 +159,7 @@
                 android:id="@+id/input_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Phone"
+                android:hint="Nomor Telepon"
                 android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 
@@ -189,7 +189,7 @@
                 android:id="@+id/input_confirm_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Confirm Password"
+                android:hint="Konfirmasi Password"
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
@@ -201,7 +201,7 @@
             android:layout_marginBottom="24dp"
             android:layout_marginTop="24dp"
             android:padding="12dp"
-            android:text="Create Account" />
+            android:text="Buat Akun!" />
 
         <TextView
             android:id="@+id/link_login"
@@ -209,7 +209,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:gravity="center"
-            android:text="Already a member? Login"
+            android:text="Sudah Jadi Member? Login!"
             android:textSize="16dip" />
 
     </LinearLayout>

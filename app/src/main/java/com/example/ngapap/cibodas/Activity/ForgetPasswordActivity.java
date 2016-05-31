@@ -76,7 +76,9 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         }
         @Override
         protected String doInBackground(String... params) {
-            String myURL=getString(R.string.base_url)+"request/password";
+
+//            String myURL=getString(R.string.base_url)+"request/password";
+            String myURL="http://192.168.137.1/C-Bodas/public/password/email";
             String email = params[0];
             String returnValue = "";
             JSONObject object = new JSONObject();

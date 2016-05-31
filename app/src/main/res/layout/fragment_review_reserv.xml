@@ -16,27 +16,13 @@
             android:id="@+id/linearTotal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="12dp"
             android:background="@drawable/product_selector"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="5dp"
-                android:text="Total"
-                android:textColor="@color/oil"
-                android:textSize="15dip"
-                android:textStyle="bold"
-                android:typeface="sans" />
-
-
+            <!-- Frame Sub Total-->
             <FrameLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -50,6 +36,79 @@
                     android:layout_gravity="left"
                     android:layout_marginLeft="12dp"
                     android:text="Total Item"
+                    android:textColor="@color/monsoon"
+                    android:textSize="13dip"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/textSubPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="12dp"
+                    android:text="Total Harga"
+                    android:textColor="@color/monsoon"
+                    android:textSize="13dip"
+                    android:typeface="sans" />
+
+            </FrameLayout>
+
+            <!-- Frame Deliv Cost-->
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/textDeliv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="12dp"
+                    android:text="Biaya Pengiriman"
+                    android:textColor="@color/monsoon"
+                    android:textSize="13dip"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/textDelivCost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="12dp"
+                    android:text="Total Pengiriman"
+                    android:textColor="@color/monsoon"
+                    android:textSize="13dip"
+                    android:typeface="sans" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/product_selector"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp">
+
+            <!-- Frame Total-->
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="7dp">
+
+                <TextView
+                    android:id="@+id/textTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Total"
                     android:textColor="@color/oil"
                     android:textSize="15dip"
                     android:textStyle="bold"
@@ -60,14 +119,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:layout_marginRight="12dp"
-                    android:text="Total Price"
+                    android:layout_marginTop="5dp"
+                    android:text="Total"
                     android:textColor="@color/oil"
                     android:textSize="15dip"
                     android:textStyle="bold"
-                    android:typeface="sans" />
+                    android:typeface="sans"
+                    android:layout_marginRight="12dp" />
 
             </FrameLayout>
+
+            <Button
+                android:id="@+id/buttonConfirmResevation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:layout_marginBottom="12dp"
+                android:text="@string/btn_confirm_reservation" />
         </LinearLayout>
 
         <!-- Linear Address -->
@@ -87,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_marginLeft="12dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="12dp"
                 android:text="Alamat Pengiriman"
                 android:textColor="@color/primary"
                 android:textSize="15dip"
@@ -101,8 +169,8 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="5dp"
                 android:text="Nama Pengirim"
-                android:textColor="@color/oil"
-                android:textSize="13dip"
+                android:textColor="@color/blue"
+                android:textSize="15dip"
                 android:textStyle="bold"
                 android:typeface="sans" />
 
@@ -115,7 +183,19 @@
                 android:layout_marginTop="5dp"
                 android:text="Alamat"
                 android:textColor="@color/oil"
-                android:textSize="12dip"
+                android:textSize="14dip"
+                android:typeface="sans" />
+
+            <TextView
+                android:id="@+id/textRegion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="5dp"
+                android:text="Region"
+                android:textColor="@color/oil"
+                android:textSize="14dip"
                 android:typeface="sans" />
 
             <TextView
@@ -127,7 +207,7 @@
                 android:layout_marginTop="5dp"
                 android:text="Zip Code"
                 android:textColor="@color/oil"
-                android:textSize="12dip"
+                android:textSize="14dip"
                 android:typeface="sans" />
 
             <TextView
@@ -135,12 +215,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="12dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="5dp"
-                android:text="Email"
+                android:drawableLeft="@drawable/icon_phone"
+                android:drawablePadding="5dp"
+                android:text="Phone"
                 android:textColor="@color/oil"
-                android:textSize="12dip"
+                android:textSize="14dip"
                 android:typeface="sans" />
 
         </LinearLayout>
@@ -149,7 +231,7 @@
         <LinearLayout
             android:id="@+id/linearProduct"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -180,12 +262,6 @@
                 android:layout_marginRight="5dp"
                 android:listSelector="@drawable/cart_row_selector"></ListView>
 
-            <Button
-                android:id="@+id/buttonConfirmResevation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|bottom"
-                android:text="@string/btn_confirm_reservation" />
 
         </LinearLayout>
 

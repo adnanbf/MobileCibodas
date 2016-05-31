@@ -6,8 +6,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.ngapap.cibodas.Adapter.ReservationAdapter;
@@ -28,7 +30,7 @@ import java.util.HashMap;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ReservationActivity extends MenuActivity {
+public class ReservationActivity extends NavActivity {
     private ArrayList<Reservation> listReservation;
     NetworkUtils networkUtils;
     @Bind(R.id.listReservation)
@@ -38,7 +40,9 @@ public class ReservationActivity extends MenuActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reservation);
+        LayoutInflater inflater = getLayoutInflater();
+        LinearLayout container = (LinearLayout) findViewById(R.id.content_frame);
+        inflater.inflate(R.layout.activity_reservation, container);
         ButterKnife.bind(this);
         networkUtils = new NetworkUtils(getApplicationContext());
         session = new SessionManager(getApplicationContext());
@@ -50,12 +54,17 @@ public class ReservationActivity extends MenuActivity {
             Customer customer = new Customer();
             customer = customer.toCustomer(jsonArray);
             GetReservationAsynctask task = new GetReservationAsynctask(ReservationActivity.this);
-            task.execute(customer.getId());
+            task.execute(customer.getId(),customer.getApi_token());
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setTitle(R.string.reservation);
+        onNavigationItemSelected(2);
     }
 
     private class GetReservationAsynctask extends AsyncTask<String, String, String> {
@@ -81,7 +90,8 @@ public class ReservationActivity extends MenuActivity {
         protected String doInBackground(String... params) {
             String returnValue = "";
             String id = params[0];
-            String myURL = getString(R.string.base_url) + "reservation/getReservation?id_customer=" + id;
+            String api_token = params[1];
+            String myURL = getString(R.string.base_url) + "reservation/getReservation?api_token="+api_token+"&id_customer=" + id;
             if (networkUtils.isConnectedToServer(myURL)) {
                 JSONParser jsonParser = new JSONParser();
                 String jsonString = jsonParser.getJSON(myURL);
@@ -91,7 +101,7 @@ public class ReservationActivity extends MenuActivity {
                         for (int i = 0; i < response.length(); i++) {
                             Reservation reservation = new Reservation();
                             reservation=reservation.toReservation(response, i);
-                            listReservation.add(reservation);
+                            getListReservation().add(reservation);
                             Log.d("Reservation Task ", reservation.getId_reservation());
                         }
                         returnValue ="valid";
@@ -121,13 +131,20 @@ public class ReservationActivity extends MenuActivity {
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("reservation", reservation);
                             android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-                            if(reservation.getStatus()==0){
-                                _listReservation.setVisibility(View.GONE);
-                                PaymentConfirmFragment paymentConfirmFragment =new PaymentConfirmFragment();
-                                paymentConfirmFragment.setArguments(bundle);
-                                ft.replace(R.id.frame, paymentConfirmFragment);
-                                ft.addToBackStack(ReservationActivity.class.getName());
-                                ft.commit();
+                            ft.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left,
+                                    R.animator.slide_in_left, R.animator.slide_out_left);
+                            switch (reservation.getStatus()){
+                                case 0:
+                                    _listReservation.setVisibility(View.GONE);
+                                    PaymentConfirmFragment paymentConfirmFragment =new PaymentConfirmFragment();
+                                    paymentConfirmFragment.setArguments(bundle);
+                                    ft.replace(R.id.frame, paymentConfirmFragment);
+                                    ft.addToBackStack(ReservationActivity.class.getName());
+                                    ft.commit();
+                                    disableNavIcon();
+                                    break;
+                                case 1:
+//                                    new CostDelivCheck().execute();
                             }
                         }
                     });
@@ -145,6 +162,8 @@ public class ReservationActivity extends MenuActivity {
         return listReservation;
     }
 
+
+
     public void setListReservation(ArrayList<Reservation> listReservation) {
         this.listReservation = listReservation;
     }
@@ -155,12 +174,12 @@ public class ReservationActivity extends MenuActivity {
             getFragmentManager().popBackStack();
             if (getFragmentManager().getBackStackEntryCount() == 1) {
                 _listReservation.setVisibility(View.VISIBLE);
+                enableNavIcon();
             }
         } else {
             super.onBackPressed();
         }
     }
-
 
 }
 

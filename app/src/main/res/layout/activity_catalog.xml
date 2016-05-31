@@ -1,16 +1,51 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main_parent"
-    android:orientation="vertical"
-    android:clickable="true"
-    android:focusableInTouchMode="true" >
+    android:fitsSystemWindows="true">
 
-    <FrameLayout
-        android:id="@+id/frame"
+    <LinearLayout
+        android:id="@+id/main_parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusableInTouchMode="true">
+
+            <ListView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentStart="false"
+                android:layout_margin="15dp"
+                android:divider="@color/iron"
+                android:dividerHeight="5dp"
+                android:listSelector="@drawable/list_selector"></ListView>
 
 
-</LinearLayout>
+        </FrameLayout>
+
+    </LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/icon_sort"
+        app:layout_anchor="@id/main_parent"
+        app:layout_anchorGravity="bottom|right|end"
+        app:backgroundTint="@color/primary" />
+
+</android.support.design.widget.CoordinatorLayout>

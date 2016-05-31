@@ -74,13 +74,13 @@ public class CatalogContentAdapter extends BaseAdapter {
         _textPrice.setText("Rp "+listCatalog.get(position).getPrice());
         _textCategory.setText(listCatalog.get(position).getCategory_name());
         _ratingProduct.setRating(Float.parseFloat(listCatalog.get(position).getProduct_rating()));
-        if(listCatalog.get(position).getLinks().length>=1){
+
+        if(listCatalog.get(position).getLinks()!=null){
             Log.d("Link Image :", listCatalog.get(0).getLinks()[0]);
             imageLoader.DisplayImage(listCatalog.get(position).getLinks()[0],_imageProduct);
         }else{
             _imageProduct.setImageResource(R.drawable.stub);
         }
-
 
         return  rowView;
     }

@@ -127,4 +127,42 @@ public class JSONParser {
         }
 
     }
+
+    public String checkDelivCost(String params){
+        StringBuilder result = new StringBuilder();
+        String myURL = "http://api.rajaongkir.com/starter/cost";
+//        String myURL = "http://api.ongkir.info/cost/find";
+//        String param = "API-Key=ff1cf34185eb10b93332dd3e668e542a&from=BandungBArat&to=Jakarta&weight=1500&courier=jne&format=json";
+        try{
+            URL url = new URL(myURL);
+            httpURLConnection= (HttpURLConnection) url.openConnection();
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            httpURLConnection.setRequestProperty("key", "cf2bcde1967e60ec66bd849c68a19e2a");
+//            httpURLConnection.setRequestProperty("application/x-www-form-urlencoded", "origin=501&destination=114&weight=1700&courier=jne");
+            httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.connect();
+
+            OutputStreamWriter writer = new OutputStreamWriter(httpURLConnection.getOutputStream());
+            writer.write(params);
+//            writer.write(param);
+            writer.flush();
+            writer.close();
+
+            InputStream input = new BufferedInputStream(httpURLConnection.getInputStream());
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                result.append(line);
+            }
+            return result.toString();
+        } catch (IOException e) {
+            String value="DBproblem";
+            e.printStackTrace();
+            return value;
+        }finally {
+            httpURLConnection.disconnect();
+        }
+    }
 }
